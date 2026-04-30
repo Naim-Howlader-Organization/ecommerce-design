@@ -2,13 +2,14 @@ import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import ProductCard from "@/components/ProductCard";
 import StarRating from "@/components/StarRating";
-import { products, getRelated } from "@/data/products";
+import { useStore, store } from "@/data/store";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, Heart, Minus, Plus } from "lucide-react";
 import { useState } from "react";
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const products = useStore(store.getProducts);
   const product = products.find((p) => p.id === Number(id));
   const [qty, setQty] = useState(1);
 
@@ -25,7 +26,7 @@ const ProductDetails = () => {
     );
   }
 
-  const related = getRelated(product);
+  const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
 
   return (
     <Layout>
