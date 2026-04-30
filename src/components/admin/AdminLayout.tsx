@@ -8,6 +8,8 @@ import {
   Bookmark,
   LogOut,
   ChevronDown,
+  ShoppingCart,
+  Users,
 } from "lucide-react";
 import { auth, useAuth } from "@/lib/auth";
 import { useState } from "react";
@@ -120,6 +122,27 @@ const AdminLayout = () => {
               </div>
             );
           })}
+
+          <NavLink
+            to="/admin/orders"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
+                isActive ? "bg-foreground text-background" : "hover:bg-muted"
+              }`
+            }
+          >
+            <ShoppingCart className="h-4 w-4" /> Orders
+          </NavLink>
+          <NavLink
+            to="/admin/customers"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
+                isActive ? "bg-foreground text-background" : "hover:bg-muted"
+              }`
+            }
+          >
+            <Users className="h-4 w-4" /> Customers
+          </NavLink>
         </nav>
         <div className="p-4 border-t">
           <p className="text-xs text-muted-foreground mb-2">Signed in as</p>

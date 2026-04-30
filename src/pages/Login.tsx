@@ -7,15 +7,24 @@ import { useState } from "react";
 import { auth } from "@/lib/auth";
 import { toast } from "sonner";
 
+const CUSTOMER_EMAIL = "customer@gmail.com";
+const CUSTOMER_PASSWORD = "12345678";
+
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("customer@luxe.com");
-  const [password, setPassword] = useState("password");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) return;
-    auth.login({ email, name: email.split("@")[0], role: "customer" });
+    setError("");
+    if (email.trim().toLowerCase() !== CUSTOMER_EMAIL || password !== CUSTOMER_PASSWORD) {
+      setError("Invalid email or password.");
+      toast.error("Invalid email or password");
+      return;
+    }
+    auth.login({ email: CUSTOMER_EMAIL, name: "Customer", role: "customer" });
     toast.success("Welcome back!");
     navigate("/dashboard");
   };
@@ -31,12 +40,31 @@ const LoginPage = () => {
           <form className="space-y-5" onSubmit={onSubmit}>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Input
+                id="password"
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </div>
+            {error && (
+              <p className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md px-3 py-2">
+                {error}
+              </p>
+            )}
             <Button type="submit" className="w-full rounded-full" size="lg">
               Sign In
             </Button>
