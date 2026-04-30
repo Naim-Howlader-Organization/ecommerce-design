@@ -23,6 +23,8 @@ import AllCategories from "./pages/admin/category/AllCategories";
 import AddCategory from "./pages/admin/category/AddCategory";
 import AllBrands from "./pages/admin/brand/AllBrands";
 import AddBrand from "./pages/admin/brand/AddBrand";
+import AdminOrders from "./pages/admin/Orders";
+import AdminCustomers from "./pages/admin/Customers";
 
 import CustomerLayout from "./components/customer/CustomerLayout";
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
@@ -67,6 +69,8 @@ const App = () => (
             <Route path="brand" element={<AllBrands />} />
             <Route path="brand/all" element={<AllBrands />} />
             <Route path="brand/add" element={<AddBrand />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="customers" element={<AdminCustomers />} />
           </Route>
 
           {/* Customer */}
