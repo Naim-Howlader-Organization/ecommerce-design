@@ -7,14 +7,24 @@ import { auth } from "@/lib/auth";
 import { toast } from "sonner";
 import { Lock } from "lucide-react";
 
+const ADMIN_EMAIL = "admin@luxe.com";
+const ADMIN_PASSWORD = "12345678";
+
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("admin@luxe.com");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    auth.login({ email, name: "Admin", role: "admin" });
+    setError("");
+    if (email.trim().toLowerCase() !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+      setError("Invalid admin credentials.");
+      toast.error("Invalid admin credentials");
+      return;
+    }
+    auth.login({ email: ADMIN_EMAIL, name: "Admin", role: "admin" });
     toast.success("Admin signed in");
     navigate("/admin/dashboard");
   };
@@ -32,12 +42,31 @@ const AdminLogin = () => {
         <form className="space-y-5" onSubmit={onSubmit}>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input
+              id="email"
+              type="email"
+              placeholder="admin@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
+          {error && (
+            <p className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md px-3 py-2">
+              {error}
+            </p>
+          )}
           <Button type="submit" className="w-full rounded-full" size="lg">
             Sign In as Admin
           </Button>
