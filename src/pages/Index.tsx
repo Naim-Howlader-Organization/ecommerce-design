@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import ProductCard from "@/components/ProductCard";
-import { products, getBestSales, getNewArrivals, getFeatured } from "@/data/products";
+import { useStore, store } from "@/data/store";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
@@ -13,6 +13,10 @@ const SectionHeader = ({ title, subtitle }: { title: string; subtitle?: string }
 );
 
 const HomePage = () => {
+  const products = useStore(store.getProducts);
+  const getBestSales = () => products.filter((p) => p.badge === "sale");
+  const getNewArrivals = () => products.filter((p) => p.badge === "new");
+  const getFeatured = () => products.filter((p) => p.badge === "featured");
   return (
     <Layout>
       {/* Hero */}

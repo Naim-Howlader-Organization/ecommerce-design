@@ -1,13 +1,16 @@
 import { useState } from "react";
 import Layout from "@/components/Layout";
 import ProductCard from "@/components/ProductCard";
-import { products, categories } from "@/data/products";
+import { useStore, store } from "@/data/store";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 
 const ProductsPage = () => {
+  const products = useStore(store.getProducts);
+  const categoryObjs = useStore(store.getCategories);
+  const categories = ["All", ...categoryObjs.map((c) => c.name)];
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [priceRange, setPriceRange] = useState([0, 200]);
+  const [priceRange, setPriceRange] = useState([0, 500]);
 
   const filtered = products.filter((p) => {
     const matchCat = selectedCategory === "All" || p.category === selectedCategory;
@@ -43,8 +46,8 @@ const ProductsPage = () => {
             <div>
               <h3 className="font-semibold mb-3 text-sm uppercase tracking-wider">Price Range</h3>
               <Slider
-                defaultValue={[0, 200]}
-                max={200}
+                defaultValue={[0, 500]}
+                max={500}
                 step={10}
                 value={priceRange}
                 onValueChange={setPriceRange}
