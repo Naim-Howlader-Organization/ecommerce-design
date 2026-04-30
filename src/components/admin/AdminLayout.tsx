@@ -8,6 +8,8 @@ import {
   Bookmark,
   LogOut,
   ChevronDown,
+  ShoppingCart,
+  Users,
 } from "lucide-react";
 import { auth, useAuth } from "@/lib/auth";
 import { useState } from "react";
