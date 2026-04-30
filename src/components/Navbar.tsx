@@ -1,6 +1,7 @@
-import { Link, useLocation } from "react-router-dom";
-import { ShoppingBag, User, Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ShoppingBag, User, Menu, X, LogOut } from "lucide-react";
 import { useState } from "react";
+import { auth, useAuth } from "@/lib/auth";
 
 const links = [
   { label: "Home", to: "/" },
@@ -11,7 +12,10 @@ const links = [
 
 const Navbar = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const user = useAuth();
   const [open, setOpen] = useState(false);
+  const accountHref = user ? (user.role === "admin" ? "/admin/dashboard" : "/dashboard") : "/login";
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -36,9 +40,19 @@ const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-4">
-          <Link to="/login" className="hidden md:block text-foreground hover:text-accent transition-colors">
+          <Link to={accountHref} className="hidden md:flex items-center gap-1.5 text-sm text-foreground hover:text-accent transition-colors">
             <User className="h-5 w-5" />
+            {user && <span className="hidden lg:inline">{user.name}</span>}
           </Link>
+          {user && (
+            <button
+              onClick={() => { auth.logout(); navigate("/"); }}
+              className="hidden md:inline text-foreground hover:text-accent transition-colors"
+              aria-label="Logout"
+            >
+              <LogOut className="h-5 w-5" />
+            </button>
+          )}
           <Link to="/cart" className="relative text-foreground hover:text-accent transition-colors">
             <ShoppingBag className="h-5 w-5" />
             <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-accent-foreground">
